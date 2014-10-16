@@ -30,10 +30,12 @@ class Next implements AutocompleteCommand
      */
     public function execute($result, $char, &$hintIndex, &$hintMessage)
     {
-        $hint = $this->getHint($result, $hintIndex);
         $this->clearHint($hintMessage);
-        $hintMessage = substr($hint, strlen($result));
-        fwrite($this->output, sprintf("\033[30;47m%s\033[39;49m",$hintMessage));
+        if($hintMessage != '') {
+            $hint = $this->getHint($result, $hintIndex);
+            $hintMessage = substr($hint, strlen($result));
+            fwrite($this->output, sprintf("\033[30;47m%s\033[39;49m", $hintMessage));
+        }
 
         return $result;
     }

@@ -115,12 +115,11 @@ class Autocomplete
             return $this->commands[self::KEY_UP];
         }
 
-        if ($char == self::KEY_OTHER && $this->hintMessage != '') {
+        if ($char == self::KEY_OTHER) {
             $char .= fread($this->input, 2);
             if (isset($char[2]) && $char[2] == 'A') {
                 return $this->commands[self::KEY_UP];
-            }
-            if (isset($char[2]) && $char[2] == 'B') {
+            } else if (isset($char[2]) && $char[2] == 'B') {
                 return $this->commands[self::KEY_DOWN];
             }
         }
