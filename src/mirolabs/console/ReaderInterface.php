@@ -7,12 +7,13 @@ interface ReaderInterface
 {
     /**
      * @param $input
-     * @param $output
+     * @param OutputInterface $output
      */
     public function __construct($input, $output);
 
     /**
+     * @param string $default
      * @return string
      */
-    public function getAnswer();
+    public function getAnswer($default);
 } 

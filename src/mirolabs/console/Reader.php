@@ -3,31 +3,51 @@
 namespace mirolabs\console;
 
 
+use mirolabs\console\Output\StandardOutput;
+
 class Reader
 {
 
     private static $stty;
 
+    /**
+     * @var resource
+     */
     private $input;
 
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
-    public function __construct()
+    /**
+     * @param OutputInterface|mixed $output
+     */
+    public function __construct($output = null)
     {
         $this->input = STDIN;
-        $this->output = STDOUT;
+        if ($output instanceof OutputInterface) {
+            $this->output = $output;
+        } else {
+            $this->output = new StandardOutput();
+        }
     }
 
 
 
     /**
      * @param string $question
+     * @param string $default
      * @param array $hints
      * @return string
      */
-    public function getAnswer($question, $hints = [])
+    public function getAnswer($question, $default = '', $hints = [])
     {
-        fwrite($this->output, $question . " ");
+        $this->output->writeFormat($question, 'question');
+        if (!empty($default)) {
+            $this->output->writeFormat('[' . $default . ']', 'info');
+        }
+        $this->output->write(': ');
 
         if ($this->hasSttyAvailable() && is_array($hints) && count($hints) > 0) {
             $reader = new Autocomplete($this->input, $this->output);
@@ -36,7 +56,7 @@ class Reader
             $reader = new Simple($this->input, $this->output);
         }
 
-        return $reader->getAnswer();
+        return $reader->getAnswer($default);
     }
 
 

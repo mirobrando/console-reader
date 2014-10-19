@@ -26,6 +26,9 @@ class Autocomplete
 
     private $input;
 
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
     /**
@@ -50,7 +53,7 @@ class Autocomplete
 
     /**
      * @param $input
-     * @param $output
+     * @param OutputInterface $output
      */
     public function __construct($input, $output)
     {
@@ -69,10 +72,11 @@ class Autocomplete
 
 
     /**
+     * @param string $default
      * @return string
      * @throws \RuntimeException
      */
-    public function getAnswer()
+    public function getAnswer($default = '')
     {
         $sttyMode = shell_exec('stty -g');
         shell_exec('stty -icanon -echo');
@@ -87,8 +91,16 @@ class Autocomplete
                 }
             }
         } catch (\Exception $e) {
+            $this->result = $default;
         }
         shell_exec(sprintf('stty %s', $sttyMode));
+
+        if ($this->result == '') {
+            if ($default == '') {
+                throw new \RuntimeException('Aborted');
+            }
+            $this->result = $default;
+        }
 
         return $this->result;
     }

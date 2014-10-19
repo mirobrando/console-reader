@@ -2,13 +2,20 @@
 
 namespace mirolabs\console\Autocomplete;
 
-
 use mirolabs\console\AutocompleteCommand;
+use mirolabs\console\OutputInterface;
 
 class Escape implements AutocompleteCommand
 {
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
+    /**
+     * @param OutputInterface $output
+     * @param $hints
+     */
     public function __construct($output, $hints)
     {
         $this->output = $output;
@@ -25,9 +32,9 @@ class Escape implements AutocompleteCommand
     {
         if($hintMessage != '') {
             for($i=0; $i<strlen($hintMessage); $i++) {
-                fwrite($this->output, "\033[1D");
+                $this->output->write("\033[1D");
             }
-            fwrite($this->output, "\033[K");
+            $this->output->write("\033[K");
             $hintIndex = 0;
             $hintMessage = '';
         }

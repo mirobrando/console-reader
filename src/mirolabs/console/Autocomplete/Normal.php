@@ -3,12 +3,19 @@
 namespace mirolabs\console\Autocomplete;
 
 use mirolabs\console\AutocompleteCommand;
+use mirolabs\console\OutputInterface;
 
 class Normal implements AutocompleteCommand
 {
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
-
+    /**
+     * @param OutputInterface $output
+     * @param $hints
+     */
     public function __construct($output, $hints)
     {
         $this->output = $output;
@@ -24,7 +31,7 @@ class Normal implements AutocompleteCommand
     public function execute($result, $char, &$hintIndex, &$hintMessage)
     {
         if ($hintMessage == '') {
-            fwrite($this->output, $char);
+            $this->output->write($char);
             return $result . $char;
         }
 

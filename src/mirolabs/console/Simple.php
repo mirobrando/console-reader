@@ -8,27 +8,28 @@ class Simple implements ReaderInterface
 
     private $input;
 
-    private $output;
-
     /**
      * @param $input
-     * @param $output
+     * @param OutputInterface $output
      */
     public function __construct($input, $output)
     {
         $this->input = $input;
-        $this->output = $output;
     }
 
     /**
+     * @param string $default
      * @return string
      * @throws \RuntimeException
      */
-    public function getAnswer()
+    public function getAnswer($default = '')
     {
         $result = fgets($this->input);
         if ($result === false) {
-            throw new \RuntimeException('Aborted');
+            if ($default == '') {
+                throw new \RuntimeException('Aborted');
+            }
+            $result = $default;
         }
 
         return trim($result);

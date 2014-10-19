@@ -3,11 +3,19 @@
 namespace mirolabs\console\Autocomplete;
 
 use mirolabs\console\AutocompleteCommand;
+use mirolabs\console\OutputInterface;
 
 class Backspace implements AutocompleteCommand
 {
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
+    /**
+     * @param OutputInterface $output
+     * @param $hints
+     */
     public function __construct($output, $hints)
     {
         $this->output = $output;
@@ -26,14 +34,14 @@ class Backspace implements AutocompleteCommand
 
         if($hintMessage != '') {
             for($i=0; $i<strlen($hintMessage); $i++) {
-                fwrite($this->output, "\033[1D");
+                $this->output->write("\033[1D");
             }
-            fwrite($this->output, "\033[K");
+            $this->output->write("\033[K");
             $hintIndex = 0;
             $hintMessage = '';
         } else if ($len > 0) {
-            fwrite($this->output, "\033[1D");
-            fwrite($this->output, "\033[K");
+            $this->output->write("\033[1D");
+            $this->output->write("\033[K");
             $result = substr($result, 0, $len-1);
         }
 

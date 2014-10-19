@@ -6,6 +6,10 @@ namespace mirolabs\console;
 interface AutocompleteCommand
 {
 
+    /**
+     * @param OutputInterface $output
+     * @param $hints
+     */
     public function __construct($output, $hints);
 
     /**

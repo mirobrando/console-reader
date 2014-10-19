@@ -4,9 +4,14 @@ namespace mirolabs\console\Autocomplete;
 
 
 use mirolabs\console\AutocompleteCommand;
+use mirolabs\console\Output\Style;
+use mirolabs\console\OutputInterface;
 
 class Previous implements AutocompleteCommand
 {
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
     /**
@@ -14,7 +19,10 @@ class Previous implements AutocompleteCommand
      */
     private $hints;
 
-
+    /**
+     * @param OutputInterface $output
+     * @param $hints
+     */
     public function __construct($output, $hints)
     {
         $this->output = $output;
@@ -34,7 +42,7 @@ class Previous implements AutocompleteCommand
         if($hintMessage != '') {
             $hint = $this->getHint($result, $hintIndex);
             $hintMessage = substr($hint, strlen($result));
-            fwrite($this->output, sprintf("\033[30;47m%s\033[39;49m", $hintMessage));
+            $this->output->writeStyle($hintMessage, new Style('black', 'white'));
         }
         return $result;
     }
@@ -42,9 +50,9 @@ class Previous implements AutocompleteCommand
     private function clearHint($hintMessage)
     {
         for($i=0; $i<strlen($hintMessage); $i++) {
-            fwrite($this->output, "\033[1D");
+            $this->output->write("\033[1D");
         }
-        fwrite($this->output, "\033[K");
+        $this->output->write("\033[K");
     }
 
     public function getHint($result, &$hintIndex)

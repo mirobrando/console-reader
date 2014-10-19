@@ -4,9 +4,14 @@ namespace mirolabs\console\Autocomplete;
 
 
 use mirolabs\console\AutocompleteCommand;
+use mirolabs\console\Output\Style;
+use mirolabs\console\OutputInterface;
 
 class Tab implements AutocompleteCommand
 {
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
     /**
@@ -14,7 +19,10 @@ class Tab implements AutocompleteCommand
      */
     private $hints;
 
-
+    /**
+     * @param OutputInterface $output
+     * @param $hints
+     */
     public function __construct($output, $hints)
     {
         $this->output = $output;
@@ -34,7 +42,7 @@ class Tab implements AutocompleteCommand
             $hint = $this->getHint($result, $hintIndex);
             if ($hint != '') {
                 $hintMessage = substr($hint, strlen($result));
-                fwrite($this->output, sprintf("\033[30;47m%s\033[39;49m",$hintMessage));
+                $this->output->writeStyle($hintMessage, new Style('black', 'white', ''));
             }
         }
 
