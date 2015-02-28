@@ -41,7 +41,7 @@ class Next implements AutocompleteCommand
         $this->clearHint($hintMessage);
         if($hintMessage != '') {
             $hint = $this->getHint($result, $hintIndex);
-            $hintMessage = substr($hint, strlen($result));
+            $hintMessage = mb_substr($hint, mb_strlen($result, "utf-8"), null, "utf-8");
             $this->output->writeStyle($hintMessage, new Style('black', 'white'));
         }
 
@@ -50,7 +50,7 @@ class Next implements AutocompleteCommand
 
     private function clearHint($hintMessage)
     {
-        for($i=0; $i<strlen($hintMessage); $i++) {
+        for($i=0; $i < mb_strlen($hintMessage, "utf-8"); $i++) {
             $this->output->write("\033[1D");
         }
         $this->output->write("\033[K");

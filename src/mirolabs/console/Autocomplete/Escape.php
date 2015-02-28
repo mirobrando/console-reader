@@ -31,7 +31,7 @@ class Escape implements AutocompleteCommand
     public function execute($result, $char, &$hintIndex, &$hintMessage)
     {
         if($hintMessage != '') {
-            for($i=0; $i<strlen($hintMessage); $i++) {
+            for($i = 0; $i < mb_strlen($hintMessage, "utf-8"); $i++) {
                 $this->output->write("\033[1D");
             }
             $this->output->write("\033[K");

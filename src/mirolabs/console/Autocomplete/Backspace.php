@@ -30,10 +30,10 @@ class Backspace implements AutocompleteCommand
      */
     public function execute($result, $char, &$hintIndex, &$hintMessage)
     {
-        $len = strlen($result);
+        $len = mb_strlen($result, "utf-8");
 
         if($hintMessage != '') {
-            for($i=0; $i<strlen($hintMessage); $i++) {
+            for($i=0; $i < mb_strlen($hintMessage, "utf-8"); $i++) {
                 $this->output->write("\033[1D");
             }
             $this->output->write("\033[K");
@@ -42,7 +42,7 @@ class Backspace implements AutocompleteCommand
         } else if ($len > 0) {
             $this->output->write("\033[1D");
             $this->output->write("\033[K");
-            $result = substr($result, 0, $len-1);
+            $result = mb_substr($result, 0, $len-1, "utf-8");
         }
 
         return $result;

@@ -41,7 +41,7 @@ class Tab implements AutocompleteCommand
         if ($hintMessage == '') {
             $hint = $this->getHint($result, $hintIndex);
             if ($hint != '') {
-                $hintMessage = substr($hint, strlen($result));
+                $hintMessage = mb_substr($hint, mb_strlen($result, "utf-8"), null, "utf-8");
                 $this->output->writeStyle($hintMessage, new Style('black', 'white', ''));
             }
         }
